@@ -28,4 +28,14 @@ func main() {
 	taskType := "builders.byte.background_tasks.install_chart.v1"
 	event.SetType(taskType)
 	event.SetTime(time.Now().UTC())
+
+	// type
+	// MsgId = source + id
+}
+
+// https://github.com/cloudevents/sdk-go/blob/main/protocol/nats_jetstream/v2/sender.go#L47-L63
+
+func main__() {
+	e := cloudeventssdk.NewEvent()
+	e.MarshalJSON()
 }
