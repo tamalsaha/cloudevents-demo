@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"os"
 	"time"
 
 	cloudeventssdk "github.com/cloudevents/sdk-go/v2"
@@ -11,15 +12,20 @@ func main() {
 	event := cloudeventssdk.NewEvent()
 	event.SetID("operation-id") // some id from request body
 
+	hostname, _ := os.Hostname()
+
 	// /byte.builders/auditor/license_id/feature/info.ProductName/api_group/api_resource/
 	// ref: https://github.com/cloudevents/spec/blob/v1.0.1/spec.md#source-1
-	event.SetSource(fmt.Sprintf("/byte.builders/auditor/%s/feature/%s/%s/%s", ev.LicenseID, info.ProductName, ev.ResourceID.Group, ev.ResourceID.Name))
+	event.SetSource(fmt.Sprintf("/byte.builders/platform-apiserver/%s", hostname))
 	// obj.getUID
 	// ref: https://github.com/cloudevents/spec/blob/v1.0.1/spec.md#subject
-	event.SetSubject(string(ev.Resource.GetUID()))
-	// builders.byte.auditor.{created, updated, deleted}.v1
-	// ref: https://github.com/cloudevents/spec/blob/v1.0.1/spec.md#type
-	event.SetType(string(et))
-	event.SetTime(time.Now().UTC())
 
+	sub := fmt.Sprintf("/byte.builders/users/%d", 1)
+	event.SetSubject(sub)
+	// builders.byte.background_tasks.{created, updated, deleted}.v1
+	// ref: https://github.com/cloudevents/spec/blob/v1.0.1/spec.md#type
+
+	taskType := "builders.byte.background_tasks.install_chart.v1"
+	event.SetType(taskType)
+	event.SetTime(time.Now().UTC())
 }
