@@ -9,7 +9,8 @@ import (
 
 func main() {
 	event := cloudeventssdk.NewEvent()
-	event.SetID(fmt.Sprintf("%s.%d", ev.Resource.GetUID(), ev.Resource.GetGeneration()))
+	event.SetID("operation-id") // some id from request body
+
 	// /byte.builders/auditor/license_id/feature/info.ProductName/api_group/api_resource/
 	// ref: https://github.com/cloudevents/spec/blob/v1.0.1/spec.md#source-1
 	event.SetSource(fmt.Sprintf("/byte.builders/auditor/%s/feature/%s/%s/%s", ev.LicenseID, info.ProductName, ev.ResourceID.Group, ev.ResourceID.Name))
